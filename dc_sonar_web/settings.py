@@ -10,8 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 from pathlib import Path
+
+import django_stubs_ext
+
 from dc_sonar_web.sensitive_settings import S_DATABASES
 
+django_stubs_ext.monkeypatch()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,9 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    'django-insecure-ovtw53&+52g=j=3)^#(a-0=&4m%^r947#cfoj5_=+#o37h2!&#'
-)
+SECRET_KEY = 'django-insecure-ovtw53&+52g=j=3)^#(a-0=&4m%^r947#cfoj5_=+#o37h2!&#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
     'frontend_render',
     'user_cabinet',
 ]
@@ -114,3 +117,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        # 'djangorestframework_camel_case.parser.CamelCaseFormParser',
+        # 'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+    ),
+}
