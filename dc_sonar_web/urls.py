@@ -17,12 +17,18 @@ from django.contrib import admin
 from django.urls import URLResolver, URLPattern
 from django.urls import path, re_path, include
 from django.views.generic.base import TemplateView
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
+from .views import MyTokenObtainPairView
 
 # list[URLPattern | URLResolver]
 # https://github.com/typeddjango/django-stubs/issues/550
 urlpatterns: list[URLPattern | URLResolver] = [
     path('admin/', admin.site.urls),
     path('api/user-cabinet/', include('user_cabinet.urls')),
+    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 urlpatterns += [
