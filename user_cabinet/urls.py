@@ -11,4 +11,5 @@ urlpatterns = [
     path('no-exp-pass-acc/<int:pk>/', views.NoExpPassAccRetrieveUpdateDestroyAPIView.as_view()),
     path('reused-pass-acc/', views.ReusedPassAccListCreateAPIView.as_view()),
     path('reused-pass-acc/<int:pk>/', views.ReusedPassAccRetrieveUpdateDestroyAPIView.as_view()),
+    path('version/', views.VersionInfo.as_view())
 ]

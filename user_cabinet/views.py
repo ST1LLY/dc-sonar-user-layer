@@ -1,6 +1,8 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
-
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.request import Request
 from .models import Domain, BrutedNTLMAcc, NoExpPassAcc, ReusedPassAcc
 from .serializers import DomainSerializer, BrutedNTLMAccSerializer, NoExpPassAccSerializer, ReusedPassAccSerializer
 
@@ -53,3 +55,9 @@ class ReusedPassAccRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAP
     queryset = ReusedPassAcc.objects.all()
     serializer_class = ReusedPassAccSerializer
     lookup_field = 'pk'
+
+
+class VersionInfo(APIView):
+    @staticmethod
+    def get(request: Request) -> Response:
+        return Response({'version': '2022.6.30'})
