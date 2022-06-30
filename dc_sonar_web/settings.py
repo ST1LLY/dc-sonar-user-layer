@@ -29,11 +29,8 @@ SECRET_KEY = S_SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['localhost']
 
-CORS_ORIGIN_ALLOW_ALL = False
-
-CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:4200',)
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,6 +46,7 @@ INSTALLED_APPS = [
     'user_cabinet',
     'rest_framework_simplejwt',
     'corsheaders',
+    'sslserver'
 ]
 
 MIDDLEWARE = [
@@ -170,3 +168,6 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = ('https://localhost:4200',)
