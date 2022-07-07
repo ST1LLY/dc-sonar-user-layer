@@ -12,3 +12,7 @@ S_DATABASES = {
         'PORT': '',
     }
 }
+
+S_SECRET_KEY = ''
+S_SIGNING_KEY = ''
+S_AES_256_KEY = ''

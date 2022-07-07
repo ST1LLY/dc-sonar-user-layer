@@ -14,7 +14,7 @@ from pathlib import Path
 
 import django_stubs_ext
 
-from dc_sonar_web.sensitive_settings import S_DATABASES, S_SECRET_KEY, S_SIGNING_KEY
+from dc_sonar_web.sensitive_settings import S_DATABASES, S_SECRET_KEY, S_SIGNING_KEY, S_AES_256_KEY
 
 django_stubs_ext.monkeypatch()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -174,3 +174,5 @@ SIMPLE_JWT = {
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = ('https://localhost:4200',)
+
+AES_256_KEY = S_AES_256_KEY
