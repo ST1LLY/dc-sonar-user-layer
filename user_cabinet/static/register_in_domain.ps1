@@ -8,7 +8,7 @@ function Generate-Password {
 }
 
 #Create Computer
-$NewComputerName = 'DCSonarWorkstation'
+$NewComputerName = 'DCSonarWS'
 try
 {
     Remove-ADComputer -Identity $NewComputerName -Confirm:$False
