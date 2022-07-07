@@ -21,6 +21,9 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from .views import MyTokenObtainPairView
+admin.site.site_header = 'DCSonar'
+admin.site.index_title = 'Administration'
+admin.site.site_title = 'DCSonar Administration'
 
 # list[URLPattern | URLResolver]
 # https://github.com/typeddjango/django-stubs/issues/550
