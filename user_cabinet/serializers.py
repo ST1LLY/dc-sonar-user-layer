@@ -1,9 +1,10 @@
+from socket import gethostbyname, gaierror
 from typing import Any
 
 from rest_framework import serializers
 
 from .models import Domain, BrutedNTLMAcc, NoExpPassAcc, ReusedPassAcc
-from socket import gethostbyname, gaierror
+from .modules.aes_cipher import AESCipher
 
 
 class DomainSerializer(serializers.ModelSerializer[Domain]):
@@ -43,6 +44,12 @@ class DomainSerializer(serializers.ModelSerializer[Domain]):
         except gaierror as e:
             raise serializers.ValidationError(f'Error resolving DNS for {value}: {e}')
         return value
+
+    def create(self, validated_data: Any) -> Any:
+        aes_cipher = AESCipher()
+        validated_data['workstation_password'] = aes_cipher.encrypt(validated_data['workstation_password'])
+        validated_data['user_password'] = aes_cipher.encrypt(validated_data['user_password'])
+        return Domain.objects.create(**validated_data)
 
 
 # class PublicDomainSerializer(serializers.ModelSerializer[Domain]):

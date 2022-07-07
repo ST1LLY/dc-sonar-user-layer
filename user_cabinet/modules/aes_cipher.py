@@ -3,12 +3,14 @@ https://stackoverflow.com/a/21928790/14642295
 """
 import base64
 import hashlib
+
 from Crypto import Random
 from Crypto.Cipher import AES
+from django.conf import settings
 
 
 class AESCipher(object):
-    def __init__(self, key: str) -> None:
+    def __init__(self, key: str = settings.AES_256_KEY) -> None:
         self.bs = AES.block_size
         self.key = hashlib.sha256(key.encode()).digest()
 
