@@ -11,23 +11,30 @@ class DomainSerializer(serializers.ModelSerializer[Domain]):
         model = Domain
         fields = [
             'pk',
-            'fqdn',
-            'ntlm_status',
-            'ntlm_progress',
-            'ntlm_status_update',
-            'ntlm_error_desc',
+            'name',
+            'hostname',
+            'base_dn',
+            'workstation_name',
+            'workstation_password',
+            'user_dn',
+            'user_password',
+            'dump_status',
+            'dump_status_update',
+            'dump_err_desc',
+            'brute_status',
+            'brute_progress',
+            'brute_status_update',
+            'brute_error_desc',
             'no_exp_pass_status',
             'no_exp_pass_status_update',
             'no_exp_pass_err_desc',
             'reused_pass_status',
             'reused_pass_status_update',
             'reused_pass_err_desc',
-            'acc_login',
-            'acc_password',
         ]
 
     @staticmethod
-    def validate_fqdn(value: str) -> str:
+    def validate_hostname(value: str) -> str:
         """
         Try to resolve the fqdn before adding
         """

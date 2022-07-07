@@ -26,17 +26,30 @@ class Domain(models.Model):
         # a process is being performed
         PERFORMING = 'PERFORMING'
         # a process has been done
-        BRUTED = 'BRUTED'
+        FINISHED = 'FINISHED'
         # if an error occurs during a process
         ERROR = 'ERROR'
 
-    fqdn: Any = models.CharField(max_length=255, unique=True, null=False)
-    ntlm_status: Any = models.CharField(
+    name: Any = models.CharField(max_length=255, unique=True, null=False)
+    hostname: Any = models.CharField(max_length=255, unique=True, null=False)
+    base_dn: Any = models.CharField(max_length=255, unique=True, null=False)
+    workstation_name: Any = models.CharField(max_length=15, null=True)
+    workstation_password: Any = models.CharField(max_length=128, null=True)
+    user_dn: Any = models.CharField(max_length=255, unique=True, null=False)
+    user_password: Any = models.CharField(max_length=128, null=True)
+
+    dump_status: Any = models.CharField(
         max_length=20, default=ProcessStatus.WAIT_SOFT_ADDING, choices=ProcessStatus.choices
     )
-    ntlm_progress: Any = models.PositiveSmallIntegerField(default=0)
-    ntlm_status_update: Any = models.DateTimeField(default=datetime.datetime(1970, 1, 1))
-    ntlm_error_desc: Any = models.TextField(null=True)
+    dump_status_update: Any = models.DateTimeField(default=datetime.datetime(1970, 1, 1))
+    dump_err_desc: Any = models.TextField(null=True)
+
+    brute_status: Any = models.CharField(
+        max_length=20, default=ProcessStatus.WAIT_SOFT_ADDING, choices=ProcessStatus.choices
+    )
+    brute_progress: Any = models.PositiveSmallIntegerField(default=0)
+    brute_status_update: Any = models.DateTimeField(default=datetime.datetime(1970, 1, 1))
+    brute_error_desc: Any = models.TextField(null=True)
     no_exp_pass_status: Any = models.CharField(
         max_length=20, default=ProcessStatus.WAIT_SOFT_ADDING, choices=ProcessStatus.choices
     )
@@ -47,11 +60,11 @@ class Domain(models.Model):
     )
     reused_pass_status_update: Any = models.DateTimeField(default=datetime.datetime(1970, 1, 1))
     reused_pass_err_desc: Any = models.TextField(null=True)
-    acc_login: Any = models.CharField(max_length=15, null=True)
-    acc_password: Any = models.CharField(max_length=128, null=True)
+
+
 
     def __str__(self) -> str:
-        return f'{self.fqdn}'
+        return f'{self.hostname}'
 
 
 class BrutedNTLMAcc(models.Model):
@@ -65,7 +78,7 @@ class BrutedNTLMAcc(models.Model):
     update_time: Any = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return f'{self.domain.fqdn}, {self.sam_acc_name}'
+        return f'{self.domain.name}, {self.sam_acc_name}'
 
 
 class NoExpPassAcc(models.Model):
@@ -78,7 +91,7 @@ class NoExpPassAcc(models.Model):
     create_time: Any = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f'{self.domain.fqdn}, {self.sam_acc_name}'
+        return f'{self.domain.name}, {self.sam_acc_name}'
 
 
 class ReusedPassAcc(models.Model):
@@ -91,4 +104,4 @@ class ReusedPassAcc(models.Model):
     create_time: Any = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f'{self.domain.fqdn}, {self.sam_acc_name}'
+        return f'{self.domain.name}, {self.sam_acc_name}'

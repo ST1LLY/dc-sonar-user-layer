@@ -5,11 +5,27 @@ from .models import Domain, BrutedNTLMAcc, NoExpPassAcc, ReusedPassAcc
 
 @admin.register(Domain)
 class DomainAdmin(admin.ModelAdmin[Domain]):
-    list_display = ('fqdn', 'acc_login', 'ntlm_status', 'no_exp_pass_status', 'reused_pass_status')
-    list_filter = ('ntlm_status', 'no_exp_pass_status', 'reused_pass_status')
+    list_display = (
+        'name',
+        'hostname',
+        'base_dn',
+        'dump_status',
+        'brute_status',
+        'no_exp_pass_status',
+        'reused_pass_status',
+    )
+    list_filter = ('dump_status', 'brute_status', 'no_exp_pass_status', 'reused_pass_status')
 
     class Meta:
-        ordering = ('fqdn', 'acc_login', 'ntlm_status', 'no_exp_pass_status', 'reused_pass_status')
+        ordering = (
+            'name',
+            'hostname',
+            'base_dn',
+            'dump_status',
+            'brute_status',
+            'no_exp_pass_status',
+            'reused_pass_status',
+        )
 
 
 @admin.register(BrutedNTLMAcc)
