@@ -13,7 +13,8 @@ from datetime import timedelta
 from pathlib import Path
 
 import django_stubs_ext
-
+from celery.schedules import crontab
+import os
 from dc_sonar_web.sensitive_settings import S_DATABASES, S_SECRET_KEY, S_SIGNING_KEY, S_AES_256_KEY
 
 django_stubs_ext.monkeypatch()
@@ -176,3 +177,70 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = ('https://localhost:4200',)
 
 AES_256_KEY = S_AES_256_KEY
+
+RMQ_SETTINGS = {'host': 'localhost'}
+CELERY_BROKER_URL = f"amqp://{RMQ_SETTINGS['host']}"
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_BEAT_SCHEDULE = {
+    'ntlm-dump-job-setter': {'task': 'user_cabinet.tasks.NTLMDumpJobSetter', 'schedule': crontab(minute='*/1')},
+    'ntlm-brute-job-setter': {'task': 'user_cabinet.tasks.NTLMBruteJobSetter', 'schedule': crontab(minute='*/1')},
+    'noexp-pass-job-setter': {'task': 'user_cabinet.tasks.NoExpPassJobSetter', 'schedule': crontab(minute='*/1')},
+    'reused-pass-job-setter': {'task': 'user_cabinet.tasks.ReusedPassJobSetter', 'schedule': crontab(minute='*/1')},
+}
+LOCKS_DIRS = {'user_cabinet': os.path.join(BASE_DIR, 'user_cabinet', 'locks')}
+LOGS_DIR = os.path.join(BASE_DIR, 'dc_sonar_web', 'logs')
+
+# https://stackoverflow.com/a/49974872/14642295
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'file': {
+            'format': '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - %(funcName)s - %(levelname)s - %(message)s'
+        },
+        'console_color': {
+            '()': 'colorlog.ColoredFormatter',
+            'format': '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - %(funcName)s -%(log_color)s %(levelname)s %(reset)s - %(message)s',
+            'log_colors': {
+                'DEBUG': 'bold_black',
+                'INFO': 'green',
+                'WARNING': 'yellow',
+                'ERROR': 'red',
+                'CRITICAL': 'bold_red',
+            },
+        },
+    },
+    'handlers': {
+        'logit': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'web_all.log'),
+            'maxBytes': 20 * 1024 * 1024,
+            'backupCount': 10,
+            'formatter': 'file',
+        },
+        'logit_error': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'web_error.log'),
+            'maxBytes': 20 * 1024 * 1024,
+            'backupCount': 10,
+            'formatter': 'file',
+        },
+        'console': {'level': 'DEBUG', 'class': 'logging.StreamHandler', 'formatter': 'console_color'},
+    },
+    'loggers': {
+        # default for all undefined Python modules
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['logit', 'logit_error', 'console'],
+        },
+        # Default runserver request logging
+        'django.server': {
+            'level': 'DEBUG',
+            'handlers': ['logit', 'logit_error', 'console'],
+        },
+    },
+}

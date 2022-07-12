@@ -1,3 +1,7 @@
+user_cabinet/logs/*
+!user_cabinet/logs/.gitkeep
+user_cabinet/locks/*
+!user_cabinet/locks/.gitkeep
 .idea
 frontend_render/static/ang/*
 !frontend_render/static/ang/.gitkeep
