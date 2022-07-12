@@ -70,7 +70,7 @@ class BrutedNTLMAcc(models.Model):
     """
 
     domain: Any = models.ForeignKey(Domain, on_delete=models.CASCADE)
-    sam_acc_name: Any = models.CharField(max_length=15)
+    sam_acc_name: Any = models.CharField(max_length=30)
     acc_password: Any = models.CharField(max_length=128)
     update_time: Any = models.DateTimeField(auto_now=True)
 

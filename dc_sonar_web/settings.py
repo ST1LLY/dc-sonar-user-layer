@@ -184,14 +184,13 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
-    'ntlm-dump-job-setter': {'task': 'user_cabinet.tasks.NTLMDumpJobSetter', 'schedule': crontab(minute='*/1')},
-    'ntlm-brute-job-setter': {'task': 'user_cabinet.tasks.NTLMBruteJobSetter', 'schedule': crontab(minute='*/1')},
-    'noexp-pass-job-setter': {'task': 'user_cabinet.tasks.NoExpPassJobSetter', 'schedule': crontab(minute='*/1')},
-    'reused-pass-job-setter': {'task': 'user_cabinet.tasks.ReusedPassJobSetter', 'schedule': crontab(minute='*/1')},
+    'ntlm-dump-job-setter': {'task': 'user_cabinet.tasks.NTLMDumpJobSetter', 'schedule': crontab(minute='*/5')},
+    'noexp-pass-job-setter': {'task': 'user_cabinet.tasks.NoExpPassJobSetter', 'schedule': crontab(minute='*/5')},
+    'reused-pass-job-setter': {'task': 'user_cabinet.tasks.ReusedPassJobSetter', 'schedule': crontab(minute='*/5')},
 }
 LOCKS_DIRS = {'user_cabinet': os.path.join(BASE_DIR, 'user_cabinet', 'locks')}
 LOGS_DIR = os.path.join(BASE_DIR, 'dc_sonar_web', 'logs')
-
+LOGS_LEVEL = 'INFO'
 # https://stackoverflow.com/a/49974872/14642295
 LOGGING = {
     'version': 1,
@@ -233,13 +232,13 @@ LOGGING = {
     },
     'loggers': {
         # default for all undefined Python modules
-        '': {
-            'level': 'DEBUG',
-            'handlers': ['logit', 'logit_error', 'console'],
-        },
+        # '': {
+        #     'level': LOGS_LEVEL,
+        #     'handlers': ['logit', 'logit_error', 'console'],
+        # },
         # Default runserver request logging
         'django.server': {
-            'level': 'DEBUG',
+            'level': LOGS_LEVEL,
             'handlers': ['logit', 'logit_error', 'console'],
         },
     },
