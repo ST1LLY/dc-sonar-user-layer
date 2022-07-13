@@ -84,7 +84,7 @@ class NoExpPassAcc(models.Model):
     """
 
     domain: Any = models.ForeignKey(Domain, related_name='no_exp_pass_acc', on_delete=models.CASCADE)
-    sam_acc_name: Any = models.CharField(max_length=15)
+    sam_acc_name: Any = models.CharField(max_length=30)
     create_time: Any = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
@@ -97,7 +97,7 @@ class ReusedPassAcc(models.Model):
     """
 
     domain: Any = models.ForeignKey(Domain, related_name='reused_pass_acc', on_delete=models.CASCADE)
-    sam_acc_name: Any = models.CharField(max_length=15)
+    sam_acc_name: Any = models.CharField(max_length=30)
     create_time: Any = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
