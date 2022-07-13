@@ -4,7 +4,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.request import Request
 from .models import Domain, BrutedNTLMAcc, NoExpPassAcc, ReusedPassAcc
-from .serializers import DomainSerializer, BrutedNTLMAccSerializer, NoExpPassAccSerializer, ReusedPassAccSerializer
+from .serializers import (
+    DomainSerializer,
+    DomainNoExpPassAccSerializer,
+    DomainReusedPassAccSerializer,
+    DomainBrutedNTLMAccSerializer,
+)
 
 
 class DomainListCreateAPIView(generics.ListCreateAPIView):
@@ -18,43 +23,25 @@ class DomainRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
 
 
-class BrutedNTLMAccListCreateAPIView(generics.ListCreateAPIView):
-    queryset = BrutedNTLMAcc.objects.all()
-    serializer_class = BrutedNTLMAccSerializer
+class DomainBrutedNTLMListAPIView(generics.ListAPIView):
+    queryset = Domain.objects.all()
+    serializer_class = DomainBrutedNTLMAccSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('domain',)
+    filterset_fields = ('id',)
 
 
-class BrutedNTLMAccRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = BrutedNTLMAcc.objects.all()
-    serializer_class = BrutedNTLMAccSerializer
-    lookup_field = 'pk'
-
-
-class NoExpPassAccListCreateAPIView(generics.ListCreateAPIView):
-    queryset = NoExpPassAcc.objects.all()
-    serializer_class = NoExpPassAccSerializer
+class DomainNoExpPassAccListAPIView(generics.ListAPIView):
+    queryset = Domain.objects.all()
+    serializer_class = DomainNoExpPassAccSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('domain',)
+    filterset_fields = ('id',)
 
 
-class NoExpPassAccRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = NoExpPassAcc.objects.all()
-    serializer_class = NoExpPassAccSerializer
-    lookup_field = 'pk'
-
-
-class ReusedPassAccListCreateAPIView(generics.ListCreateAPIView):
-    queryset = ReusedPassAcc.objects.all()
-    serializer_class = ReusedPassAccSerializer
+class DomainReusedPassAccListAPIView(generics.ListAPIView):
+    queryset = Domain.objects.all()
+    serializer_class = DomainReusedPassAccSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('domain',)
-
-
-class ReusedPassAccRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ReusedPassAcc.objects.all()
-    serializer_class = ReusedPassAccSerializer
-    lookup_field = 'pk'
+    filterset_fields = ('id',)
 
 
 class VersionInfo(APIView):

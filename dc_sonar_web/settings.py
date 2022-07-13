@@ -184,9 +184,9 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
-    'ntlm-dump-job-setter': {'task': 'user_cabinet.tasks.NTLMDumpJobSetter', 'schedule': crontab(minute='*/5')},
+    'ntlm-dump-job-setter': {'task': 'user_cabinet.tasks.NTLMDumpJobSetter', 'schedule': crontab(minute='*/60')},
     'noexp-pass-job-setter': {'task': 'user_cabinet.tasks.NoExpPassJobSetter', 'schedule': crontab(minute='*/5')},
-    'reused-pass-job-setter': {'task': 'user_cabinet.tasks.ReusedPassJobSetter', 'schedule': crontab(minute='*/5')},
+    'reused-pass-job-setter': {'task': 'user_cabinet.tasks.ReusedPassJobSetter', 'schedule': crontab(minute='*/60')},
 }
 LOCKS_DIRS = {'user_cabinet': os.path.join(BASE_DIR, 'user_cabinet', 'locks')}
 LOGS_DIR = os.path.join(BASE_DIR, 'dc_sonar_web', 'logs')

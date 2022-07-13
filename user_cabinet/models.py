@@ -69,7 +69,7 @@ class BrutedNTLMAcc(models.Model):
     Accounts bruted via NTLM-hashes
     """
 
-    domain: Any = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    domain: Any = models.ForeignKey(Domain, related_name='bruted_ntlm_acc', on_delete=models.CASCADE)
     sam_acc_name: Any = models.CharField(max_length=30)
     acc_password: Any = models.CharField(max_length=128)
     update_time: Any = models.DateTimeField(auto_now=True)
@@ -83,7 +83,7 @@ class NoExpPassAcc(models.Model):
     Accounts with never expire passwords
     """
 
-    domain: Any = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    domain: Any = models.ForeignKey(Domain, related_name='no_exp_pass_acc', on_delete=models.CASCADE)
     sam_acc_name: Any = models.CharField(max_length=15)
     create_time: Any = models.DateTimeField(auto_now_add=True)
 
@@ -96,7 +96,7 @@ class ReusedPassAcc(models.Model):
     Accounts with reused passwords in different domains
     """
 
-    domain: Any = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    domain: Any = models.ForeignKey(Domain, related_name='reused_pass_acc', on_delete=models.CASCADE)
     sam_acc_name: Any = models.CharField(max_length=15)
     create_time: Any = models.DateTimeField(auto_now_add=True)
 

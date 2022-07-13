@@ -52,28 +52,43 @@ class DomainSerializer(serializers.ModelSerializer[Domain]):
         return Domain.objects.create(**validated_data)
 
 
-# class PublicDomainSerializer(serializers.ModelSerializer[Domain]):
-#     pk = serializers.IntegerField(read_only=True)
-#     fqdn = serializers.CharField(read_only=True)
-#
-#     class Meta:
-#         model = Domain
-#         fields = ['pk', 'fqdn']
-
-
 class BrutedNTLMAccSerializer(serializers.ModelSerializer[BrutedNTLMAcc]):
     class Meta:
         model = BrutedNTLMAcc
-        fields = ['pk', 'domain', 'sam_acc_name', 'acc_password', 'update_time']
+        fields = ['pk', 'sam_acc_name', 'acc_password', 'update_time']
+
+
+class DomainBrutedNTLMAccSerializer(serializers.ModelSerializer[Domain]):
+    bruted_ntlm_acc: Any = BrutedNTLMAccSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Domain
+        fields = ['pk', 'name', 'hostname', 'base_dn', 'bruted_ntlm_acc']
 
 
 class NoExpPassAccSerializer(serializers.ModelSerializer[NoExpPassAcc]):
     class Meta:
         model = NoExpPassAcc
-        fields = ['pk', 'domain', 'sam_acc_name', 'create_time']
+        fields = ['pk', 'sam_acc_name', 'create_time']
+
+
+class DomainNoExpPassAccSerializer(serializers.ModelSerializer[Domain]):
+    no_exp_pass_acc: Any = NoExpPassAccSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Domain
+        fields = ['pk', 'name', 'hostname', 'base_dn', 'no_exp_pass_acc']
 
 
 class ReusedPassAccSerializer(serializers.ModelSerializer[ReusedPassAcc]):
     class Meta:
         model = NoExpPassAcc
-        fields = ['pk', 'domain', 'sam_acc_name', 'create_time']
+        fields = ['pk', 'sam_acc_name', 'create_time']
+
+
+class DomainReusedPassAccSerializer(serializers.ModelSerializer[Domain]):
+    reused_pass_acc: Any = ReusedPassAccSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Domain
+        fields = ['pk', 'name', 'hostname', 'base_dn', 'reused_pass_acc']
