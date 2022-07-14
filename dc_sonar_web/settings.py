@@ -186,7 +186,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     'ntlm-dump-job-setter': {'task': 'user_cabinet.tasks.NTLMDumpJobSetter', 'schedule': crontab(minute='*/60')},
     'noexp-pass-job-setter': {'task': 'user_cabinet.tasks.NoExpPassJobSetter', 'schedule': crontab(minute='*/5')},
-    'reused-pass-job-setter': {'task': 'user_cabinet.tasks.ReusedPassJobSetter', 'schedule': crontab(minute='*/60')},
+    'reused-pass-job-setter': {'task': 'user_cabinet.tasks.ReusedPassJobSetter', 'schedule': crontab(minute='*/5')},
 }
 LOCKS_DIRS = {'user_cabinet': os.path.join(BASE_DIR, 'user_cabinet', 'locks')}
 LOGS_DIR = os.path.join(BASE_DIR, 'dc_sonar_web', 'logs')
@@ -228,18 +228,54 @@ LOGGING = {
             'backupCount': 10,
             'formatter': 'file',
         },
+        'undefined': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'undefined_all.log'),
+            'maxBytes': 20 * 1024 * 1024,
+            'backupCount': 10,
+            'formatter': 'file',
+        },
+        'undefined_error': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'undefined_error.log'),
+            'maxBytes': 20 * 1024 * 1024,
+            'backupCount': 10,
+            'formatter': 'file',
+        },
+        'celery': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'celery_all.log'),
+            'maxBytes': 20 * 1024 * 1024,
+            'backupCount': 10,
+            'formatter': 'file',
+        },
+        'celery_error': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_DIR, 'celery_error.log'),
+            'maxBytes': 20 * 1024 * 1024,
+            'backupCount': 10,
+            'formatter': 'file',
+        },
         'console': {'level': 'DEBUG', 'class': 'logging.StreamHandler', 'formatter': 'console_color'},
     },
     'loggers': {
         # default for all undefined Python modules
-        # '': {
-        #     'level': LOGS_LEVEL,
-        #     'handlers': ['logit', 'logit_error', 'console'],
-        # },
+        '': {
+            'level': LOGS_LEVEL,
+            'handlers': ['undefined', 'undefined_error', 'console'],
+        },
         # Default runserver request logging
         'django.server': {
             'level': LOGS_LEVEL,
             'handlers': ['logit', 'logit_error', 'console'],
+        },
+        'user_cabinet.tasks': {
+            'level': LOGS_LEVEL,
+            'handlers': ['celery', 'celery_error'],
         },
     },
 }

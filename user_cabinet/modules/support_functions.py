@@ -1,8 +1,10 @@
 import json
-from typing import Any
 import logging
-from colorlog import ColoredFormatter
+import traceback
 from logging.handlers import RotatingFileHandler
+from typing import Any
+
+from colorlog import ColoredFormatter
 
 
 def dict_to_json_bytes(dict: dict[str, Any]) -> bytes:
@@ -56,3 +58,7 @@ def init_custome_logger(
     logger.addHandler(file_handler)
     logger.addHandler(error_file_handler)
     return logger
+
+def get_error_text(e: Exception) -> str:
+    error_traceback_format = traceback.format_exc()
+    return f'{e}\n{error_traceback_format}'

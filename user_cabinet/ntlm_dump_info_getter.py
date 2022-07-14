@@ -33,11 +33,13 @@ def rmq_callback(ch: Any, method: Any, properties: Any, body: Any) -> None:
         domain = Domain.objects.get(pk=msg['domain_pk'])
         if msg['status'] == 'PERFORMING':
             domain.dump_status = Domain.ProcessStatus.PERFORMING
+            domain.dump_err_desc = ''
         elif msg['status'] == 'ERROR':
             domain.dump_status = Domain.ProcessStatus.ERROR
             domain.dump_err_desc = msg['error_desc']
         elif msg['status'] == 'FINISHED':
             domain.dump_status = Domain.ProcessStatus.FINISHED
+            domain.dump_err_desc = ''
         else:
             domain.dump_status = Domain.ProcessStatus.ERROR
             domain.dump_err_desc = f"Unknown msg['status']: {msg['status']}"
@@ -48,7 +50,7 @@ def rmq_callback(ch: Any, method: Any, properties: Any, body: Any) -> None:
         logger.error('Error', exc_info=sys.exc_info())
         if domain:
             domain.dump_status = Domain.ProcessStatus.ERROR
-            domain.dump_err_desc = str(e)
+            domain.dump_err_desc = sup_f.get_error_text(e)
             domain.dump_status_update = datetime.datetime.now().astimezone()
             domain.save()
     finally:

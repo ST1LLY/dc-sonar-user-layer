@@ -80,15 +80,17 @@ class DomainNoExpPassAccSerializer(serializers.ModelSerializer[Domain]):
         fields = ['pk', 'name', 'hostname', 'base_dn', 'no_exp_pass_acc']
 
 
-class ReusedPassAccSerializer(serializers.ModelSerializer[ReusedPassAcc]):
-    class Meta:
-        model = NoExpPassAcc
-        fields = ['pk', 'sam_acc_name', 'create_time']
-
-
 class DomainReusedPassAccSerializer(serializers.ModelSerializer[Domain]):
-    reused_pass_acc: Any = ReusedPassAccSerializer(many=True, read_only=True)
 
     class Meta:
         model = Domain
-        fields = ['pk', 'name', 'hostname', 'base_dn', 'reused_pass_acc']
+        fields = ['pk', 'name', 'hostname']
+
+
+class ReusedPassAccSerializer(serializers.ModelSerializer[ReusedPassAcc]):
+    domain: Any = DomainReusedPassAccSerializer(read_only=True)
+    reused_domain: Any = DomainReusedPassAccSerializer(read_only=True)
+
+    class Meta:
+        model = ReusedPassAcc
+        fields = ['pk', 'domain', 'sam_acc_name', 'reused_domain', 'reused_sam_acc_name', 'create_time']

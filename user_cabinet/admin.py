@@ -46,7 +46,7 @@ class NoExpPassAccsAdmin(admin.ModelAdmin[NoExpPassAcc]):
 
 @admin.register(ReusedPassAcc)
 class ReusedPassAccsAdmin(admin.ModelAdmin[ReusedPassAcc]):
-    list_display = ('domain', 'sam_acc_name')
+    list_display = ('domain', 'sam_acc_name', 'reused_domain', 'reused_sam_acc_name')
 
     class Meta:
-        ordering = ('domain', 'sam_acc_name')
+        ordering = ('domain', 'sam_acc_name', 'reused_domain', 'reused_sam_acc_name')

@@ -7,7 +7,7 @@ from .models import Domain, BrutedNTLMAcc, NoExpPassAcc, ReusedPassAcc
 from .serializers import (
     DomainSerializer,
     DomainNoExpPassAccSerializer,
-    DomainReusedPassAccSerializer,
+    ReusedPassAccSerializer,
     DomainBrutedNTLMAccSerializer,
 )
 
@@ -37,11 +37,11 @@ class DomainNoExpPassAccListAPIView(generics.ListAPIView):
     filterset_fields = ('id',)
 
 
-class DomainReusedPassAccListAPIView(generics.ListAPIView):
-    queryset = Domain.objects.all()
-    serializer_class = DomainReusedPassAccSerializer
+class ReusedPassAccListAPIView(generics.ListAPIView):
+    queryset = ReusedPassAcc.objects.all()
+    serializer_class = ReusedPassAccSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('id',)
+    filterset_fields = ('domain',)
 
 
 class VersionInfo(APIView):
