@@ -1,8 +1,13 @@
+"""
+https://www.django-rest-framework.org/api-guide/serializers/
+"""
+# pylint:disable=missing-class-docstring, missing-module-docstring
 from socket import gethostbyname, gaierror
 from typing import Any
 
 from rest_framework import serializers
 
+import tasks as celery_tasks
 from .models import Domain, BrutedNTLMAcc, NoExpPassAcc, ReusedPassAcc
 from .modules.aes_cipher import AESCipher
 
@@ -41,15 +46,17 @@ class DomainSerializer(serializers.ModelSerializer[Domain]):
         """
         try:
             gethostbyname(value)
-        except gaierror as e:
-            raise serializers.ValidationError(f'Error resolving DNS for {value}: {e}')
+        except gaierror as exc:
+            raise serializers.ValidationError(f'Error resolving DNS for {value}: {exc}')
         return value
 
     def create(self, validated_data: Any) -> Any:
         aes_cipher = AESCipher()
         validated_data['workstation_password'] = aes_cipher.encrypt(validated_data['workstation_password'])
         validated_data['user_password'] = aes_cipher.encrypt(validated_data['user_password'])
-        return Domain.objects.create(**validated_data)
+        domain = Domain.objects.create(**validated_data)
+        celery_tasks.ntlm_dump_job_setter()
+        return domain
 
 
 class BrutedNTLMAccSerializer(serializers.ModelSerializer[BrutedNTLMAcc]):
@@ -81,7 +88,6 @@ class DomainNoExpPassAccSerializer(serializers.ModelSerializer[Domain]):
 
 
 class DomainReusedPassAccSerializer(serializers.ModelSerializer[Domain]):
-
     class Meta:
         model = Domain
         fields = ['pk', 'name', 'hostname']
