@@ -44,10 +44,14 @@ class Domain(models.Model):
     brute_progress: Any = models.PositiveSmallIntegerField(default=0)
     brute_status_update: Any = models.DateTimeField(default=datetime.datetime(1970, 1, 1))
     brute_error_desc: Any = models.TextField(null=True)
-    no_exp_pass_status: Any = models.CharField(max_length=20, default=ProcessStatus.INIT, choices=ProcessStatus.choices)
+    no_exp_pass_status: Any = models.CharField(
+        max_length=20, default=ProcessStatus.INIT, choices=ProcessStatus.choices
+    )
     no_exp_pass_status_update: Any = models.DateTimeField(default=datetime.datetime(1970, 1, 1))
     no_exp_pass_err_desc: Any = models.TextField(null=True)
-    reused_pass_status: Any = models.CharField(max_length=20, default=ProcessStatus.INIT, choices=ProcessStatus.choices)
+    reused_pass_status: Any = models.CharField(
+        max_length=20, default=ProcessStatus.INIT, choices=ProcessStatus.choices
+    )
     reused_pass_status_update: Any = models.DateTimeField(default=datetime.datetime(1970, 1, 1))
     reused_pass_err_desc: Any = models.TextField(null=True)
 

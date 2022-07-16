@@ -1,3 +1,4 @@
+# pylint:disable=missing-class-docstring, missing-module-docstring
 from django.apps import AppConfig
 
 

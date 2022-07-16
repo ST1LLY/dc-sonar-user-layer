@@ -9,12 +9,13 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
 
 import django_stubs_ext
 from celery.schedules import crontab
-import os
+
 from dc_sonar_web.sensitive_settings import S_DATABASES, S_SECRET_KEY, S_SIGNING_KEY, S_AES_256_KEY
 
 django_stubs_ext.monkeypatch()
@@ -184,8 +185,8 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
-    'ntlm-dump-job-setter': {'task': 'user_cabinet.tasks.NTLMDumpJobSetter', 'schedule': crontab(minute='*/60')},
-    'noexp-pass-job-setter': {'task': 'user_cabinet.tasks.NoExpPassJobSetter', 'schedule': crontab(minute='*/5')},
+    'ntlm-dump-job-setter': {'task': 'user_cabinet.tasks.ntlm_dump_job_setter', 'schedule': crontab(minute='*/5')},
+    'noexp-pass-job-setter': {'task': 'user_cabinet.tasks.noexp_pass_job_setter', 'schedule': crontab(minute='*/5')},
     'reused-pass-job-setter': {'task': 'user_cabinet.tasks.ReusedPassJobSetter', 'schedule': crontab(minute='*/5')},
 }
 LOCKS_DIRS = {'user_cabinet': os.path.join(BASE_DIR, 'user_cabinet', 'locks')}
@@ -197,11 +198,13 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'file': {
-            'format': '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - %(funcName)s - %(levelname)s - %(message)s'
+            'format': '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - '
+                      '%(funcName)s - %(levelname)s - %(message)s'
         },
         'console_color': {
             '()': 'colorlog.ColoredFormatter',
-            'format': '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - %(funcName)s -%(log_color)s %(levelname)s %(reset)s - %(message)s',
+            'format': '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - '
+                      '%(funcName)s -%(log_color)s %(levelname)s %(reset)s - %(message)s',
             'log_colors': {
                 'DEBUG': 'bold_black',
                 'INFO': 'green',

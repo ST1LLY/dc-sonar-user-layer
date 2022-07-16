@@ -1,9 +1,14 @@
+"""
+https://www.django-rest-framework.org/api-guide/views/
+"""
+# pylint:disable=missing-class-docstring, missing-function-docstring
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.request import Request
-from .models import Domain, BrutedNTLMAcc, NoExpPassAcc, ReusedPassAcc
+
+from .models import Domain, ReusedPassAcc
 from .serializers import (
     DomainSerializer,
     DomainNoExpPassAccSerializer,

@@ -1,3 +1,8 @@
+"""
+Django admin panel settings
+"""
+# pylint:disable=missing-class-docstring,unsubscriptable-object
+# https://github.com/PyCQA/pylint-django/issues/361 (unsubscriptable-object)
 from django.contrib import admin
 
 from .models import Domain, BrutedNTLMAcc, NoExpPassAcc, ReusedPassAcc

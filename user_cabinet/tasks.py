@@ -1,15 +1,18 @@
+"""
+The tasks performed by Celery
+The tasks shedule is set in dc_sonar_web/settings.py in param CELERY_BEAT_SCHEDULE
+"""
 import json
-import logging
 import os
 import sys
 
 import pika
 from celery import shared_task
+from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.core import serializers
 from django.db.models import Q
 from filelock import Timeout, FileLock
-from celery.utils.log import get_task_logger
 
 import user_cabinet.modules.support_functions as sup_f
 from .models import Domain
@@ -19,9 +22,13 @@ logger.info('===RUN===')
 
 
 @shared_task()
-def NTLMDumpJobSetter() -> None:
+def ntlm_dump_job_setter() -> None:
+    """
+    Generates tasks for dumping NTLM hashes per domain and sends ones
+    to the wait_dumping_ntlm queue for further performing
+    """
     task_name = 'ntlm-dump-job-setter'
-    logger.info(f'run {task_name}')
+    logger.info('RUN %s', task_name)
     rmq_conn = None
     try:
 
@@ -44,21 +51,21 @@ def NTLMDumpJobSetter() -> None:
             if not domains_qs:
                 logger.info("Domains for dumping haven't been gotten")
                 return
-            logger.info(f'domains_qs = {domains_qs}')
+            logger.info('domains_qs = %s', domains_qs)
 
             domains = json.loads(
                 serializers.serialize(
                     'json', domains_qs, fields=('pk', 'name', 'hostname', 'workstation_name', 'workstation_password')
                 )
             )
-            logger.info(f'domains = {domains}')
+            logger.info('domains = %s', domains)
             for idx, domain in enumerate(domains):
 
                 rmq_conn = pika.BlockingConnection(pika.ConnectionParameters(**settings.RMQ_SETTINGS))
                 channel = rmq_conn.channel()
                 channel.queue_declare(queue='wait_dumping_ntlm', durable=True)
 
-                logger.info(f'domain: {domain}')
+                logger.info('domain: %s', domain)
 
                 channel.basic_publish(
                     exchange='',
@@ -71,7 +78,7 @@ def NTLMDumpJobSetter() -> None:
                 domains_qs[idx].dump_status = Domain.ProcessStatus.WAIT_PERFORMING
                 domains_qs[idx].save()
     except Timeout:
-        logger.info(f'Previous process of {task_name} is working')
+        logger.info('Previous process of %s is working', task_name)
     except Exception:
         logger.error('Error', exc_info=sys.exc_info())
     finally:
@@ -80,9 +87,13 @@ def NTLMDumpJobSetter() -> None:
 
 
 @shared_task()
-def NoExpPassJobSetter() -> None:
+def noexp_pass_job_setter() -> None:
+    """
+    Generates tasks for checking no expired passwords accs per domain and sends ones
+    to the wait_no_exp_pass_checking queue for further performing
+    """
     task_name = 'noexp-pass-job-setter'
-    logger.info(f'run {task_name}')
+    logger.info('RUN %s', task_name)
     rmq_conn = None
     try:
 
@@ -96,13 +107,13 @@ def NoExpPassJobSetter() -> None:
             if not domains_qs:
                 logger.info("Domains for checking no exp passwords haven't been found")
                 return
-            logger.info(f'domains_qs = {domains_qs}')
+            logger.info('domains_qs = %s', domains_qs)
             domains = json.loads(
                 serializers.serialize(
                     'json', domains_qs, fields=('pk', 'name', 'hostname', 'base_dn', 'user_dn', 'user_password')
                 )
             )
-            logger.info(f'domains = {domains}')
+            logger.info('domains = %s', domains)
 
             for idx, domain in enumerate(domains):
 
@@ -110,7 +121,7 @@ def NoExpPassJobSetter() -> None:
                 channel = rmq_conn.channel()
                 channel.queue_declare(queue='wait_no_exp_pass_checking', durable=True)
 
-                logger.info(f'domain: {domain}')
+                logger.info('domain: %s', domain)
 
                 channel.basic_publish(
                     exchange='',
@@ -124,7 +135,7 @@ def NoExpPassJobSetter() -> None:
                 domains_qs[idx].save()
 
     except Timeout:
-        logger.info(f'Previous process of {task_name} is working')
+        logger.info('Previous process of %s is working', task_name)
     except Exception:
         logger.error('Error', exc_info=sys.exc_info())
     finally:
@@ -133,9 +144,13 @@ def NoExpPassJobSetter() -> None:
 
 
 @shared_task()
-def ReusedPassJobSetter() -> None:
+def reused_pass_job_setter() -> None:
+    """
+    Generates tasks for checking reused passwords accs per domain and sends ones
+    to the wait_reused_pass_checking queue for further performing
+    """
     task_name = 'reused-pass-job-setter'
-    logger.info(f'run {task_name}')
+    logger.info('RUN %s', task_name)
     rmq_conn = None
     try:
         lock = FileLock(os.path.join(settings.LOCKS_DIRS['user_cabinet'], f'{task_name}.lock'), timeout=1)
@@ -149,11 +164,11 @@ def ReusedPassJobSetter() -> None:
                 logger.info("Domains for checking reused passwords haven't been found")
                 return
 
-            logger.info(f'domains_qs = {domains_qs}')
+            logger.info('domains_qs = %s', domains_qs)
 
             domains = json.loads(serializers.serialize('json', domains_qs, fields=('pk', 'name')))
             exist_domains_pk = tuple(row for row in Domain.objects.values_list('pk', flat=True))
-            logger.info(f'domains = {domains}')
+            logger.info('domains = %s', domains)
 
             for idx, domain in enumerate(domains):
 
@@ -161,7 +176,7 @@ def ReusedPassJobSetter() -> None:
                 channel = rmq_conn.channel()
                 channel.queue_declare(queue='wait_reused_pass_checking', durable=True)
 
-                logger.info(f'domain: {domain}')
+                logger.info('domain: %s', domain)
 
                 channel.basic_publish(
                     exchange='',
@@ -175,7 +190,7 @@ def ReusedPassJobSetter() -> None:
                 domains_qs[idx].save()
 
     except Timeout:
-        logger.info(f'Previous process of {task_name} is working')
+        logger.info('Previous process of %s is working', task_name)
     except Exception:
         logger.error('Error', exc_info=sys.exc_info())
     finally:

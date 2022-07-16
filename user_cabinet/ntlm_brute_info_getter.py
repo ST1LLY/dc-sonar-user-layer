@@ -1,13 +1,19 @@
+"""
+The listener of info_bruting_ntlm queue.
+Having received a message from the info_bruting_ntlm queue, it updates the information of
+bruting NTLM hashes for the specific domain.
+"""
+import datetime
 import json
 import os
 import sys
+from typing import Any
 
 import django
+import pika
 
 sys.path.append('..')
-from typing import Any
-import datetime
-import pika
+
 
 import modules.support_functions as sup_f
 
@@ -24,7 +30,10 @@ logger = sup_f.init_custome_logger(
 )
 
 
-def rmq_callback(ch: Any, method: Any, properties: Any, body: Any) -> None:
+def rmq_callback(channel: Any, method: Any, _: Any, body: Any) -> None:
+    """
+    The performer of the received message from the queue
+    """
     domain = None
     try:
         logger.info('Working on a msg')
@@ -52,27 +61,27 @@ def rmq_callback(ch: Any, method: Any, properties: Any, body: Any) -> None:
         domain.brute_status_update = datetime.datetime.now().astimezone()
         domain.save()
 
-    except Exception as e:
+    except Exception as exp:
         logger.error('Error', exc_info=sys.exc_info())
         if domain:
             domain.brute_status = Domain.ProcessStatus.ERROR
-            domain.brute_error_desc = sup_f.get_error_text(e)
+            domain.brute_error_desc = sup_f.get_error_text(exp)
             domain.brute_status_update = datetime.datetime.now().astimezone()
             domain.save()
     finally:
-        ch.basic_ack(delivery_tag=method.delivery_tag)
+        channel.basic_ack(delivery_tag=method.delivery_tag)
 
 
 if __name__ == '__main__':
 
-    rmq_conn = None
+    rmq_conn = None   # pylint: disable=invalid-name
     try:
         rmq_conn = pika.BlockingConnection(pika.ConnectionParameters(**settings.RMQ_SETTINGS))
-        channel = rmq_conn.channel()
+        created_channel = rmq_conn.channel()
 
-        channel.queue_declare(queue='info_bruting_ntlm', durable=True)
-        channel.basic_consume(queue='info_bruting_ntlm', on_message_callback=rmq_callback)
-        channel.start_consuming()
+        created_channel.queue_declare(queue='info_bruting_ntlm', durable=True)
+        created_channel.basic_consume(queue='info_bruting_ntlm', on_message_callback=rmq_callback)
+        created_channel.start_consuming()
     except Exception as e:
         logger.error('Error', exc_info=sys.exc_info())
     finally:
