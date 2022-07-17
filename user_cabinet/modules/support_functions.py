@@ -1,3 +1,6 @@
+"""
+Support functions for the main logic
+"""
 import json
 import logging
 import traceback
@@ -7,21 +10,21 @@ from typing import Any
 from colorlog import ColoredFormatter
 
 
-def dict_to_json_bytes(dict: dict[str, Any]) -> bytes:
+def dict_to_json_bytes(converting_dict: dict[str, Any]) -> bytes:
     """
     Convert dict to json and output bytes
     """
-    return (json.dumps(dict, ensure_ascii=False)).encode('utf-8')
+    return (json.dumps(converting_dict, ensure_ascii=False)).encode('utf-8')
 
 
 def init_custome_logger(
     all_log_file_path: str,
     error_log_file_path: str,
     logging_level: str = 'DEBUG',
-    console_format: str = '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - %(funcName)s -%(log_color)s '
-    '%(levelname)s %(reset)s - %(message)s',
-    file_format: str = '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - %(funcName)s - %(levelname)s - '
-    '%(message)s',
+    console_format: str = '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - %(funcName)s -%(log_color)s'
+    ' %(levelname)s %(reset)s - %(message)s',
+    file_format: str = '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - %(funcName)s - %(levelname)s -'
+    ' %(message)s',
 ) -> logging.Logger:
     """
     Creating custom logger
@@ -59,6 +62,10 @@ def init_custome_logger(
     logger.addHandler(error_file_handler)
     return logger
 
-def get_error_text(e: Exception) -> str:
+
+def get_error_text(exc: Exception) -> str:
+    """
+    Get full text of the Exception
+    """
     error_traceback_format = traceback.format_exc()
-    return f'{e}\n{error_traceback_format}'
+    return f'{exc}\n{error_traceback_format}'
