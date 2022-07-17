@@ -10,7 +10,8 @@ from rest_framework import generics
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.conf import settings
+import user_cabinet.modules.support_functions as sup_f
 from .models import Domain, ReusedPassAcc
 from .serializers import (
     DomainSerializer,
@@ -55,4 +56,4 @@ class ReusedPassAccListAPIView(generics.ListAPIView):
 class VersionInfo(APIView):
     @staticmethod
     def get(request: Request) -> Response:
-        return Response({'version': '2022.6.30'})
+        return Response({'version': sup_f.get_file_text(settings.VERSION_FILE_PATH)})

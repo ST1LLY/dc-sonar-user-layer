@@ -10,7 +10,7 @@ from typing import Any
 
 from rest_framework import serializers
 
-import tasks as celery_tasks
+import user_cabinet.tasks as celery_tasks
 from .models import Domain, BrutedNTLMAcc, NoExpPassAcc, ReusedPassAcc
 from .modules.aes_cipher import AESCipher
 

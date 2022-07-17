@@ -72,3 +72,16 @@ def get_error_text(exc: Exception) -> str:
     """
     error_traceback_format = traceback.format_exc()
     return f'{exc}\n{error_traceback_format}'
+
+def get_file_text(path: str) -> str:
+    """
+    Getting text from file
+    Args:
+        path (str): file path
+
+    Returns:
+        str: text
+    """
+    with open(path, 'r', encoding='utf-8') as file:
+        text_template = file.read()
+    return text_template

@@ -187,7 +187,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     'ntlm-dump-job-setter': {'task': 'user_cabinet.tasks.ntlm_dump_job_setter', 'schedule': crontab(minute='*/5')},
     'noexp-pass-job-setter': {'task': 'user_cabinet.tasks.noexp_pass_job_setter', 'schedule': crontab(minute='*/5')},
-    'reused-pass-job-setter': {'task': 'user_cabinet.tasks.ReusedPassJobSetter', 'schedule': crontab(minute='*/5')},
+    'reused-pass-job-setter': {'task': 'user_cabinet.tasks.reused_pass_job_setter', 'schedule': crontab(minute='*/5')},
 }
 LOCKS_DIRS = {'user_cabinet': os.path.join(BASE_DIR, 'user_cabinet', 'locks')}
 LOGS_DIR = os.path.join(BASE_DIR, 'dc_sonar_web', 'logs')
@@ -282,3 +282,5 @@ LOGGING = {
         },
     },
 }
+
+VERSION_FILE_PATH = os.path.join(BASE_DIR, 'dc_sonar_web', 'DC_SONAR_VERSION.txt')
