@@ -1,5 +1,8 @@
 """
 https://www.django-rest-framework.org/api-guide/views/
+
+Author:
+    Konstantin S. (https://github.com/ST1LLY)
 """
 # pylint:disable=missing-class-docstring, missing-function-docstring
 from django_filters.rest_framework import DjangoFilterBackend

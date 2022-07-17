@@ -2,6 +2,9 @@
 The listener of info_dumping_ntlm queue.
 Having received a message from the info_dumping_ntlm queue, it updates the information of
 dumping NTLM hashes for the specific domain.
+
+Author:
+    Konstantin S. (https://github.com/ST1LLY)
 """
 import datetime
 import json

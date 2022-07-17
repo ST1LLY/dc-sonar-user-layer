@@ -2,6 +2,9 @@
 The listener of info_no_exp_pass_checking queue.
 Having received a message from the info_no_exp_pass_checking queue, it updates the information of
 no expire password accounts for the specific domain.
+
+Author:
+    Konstantin S. (https://github.com/ST1LLY)
 """
 import datetime
 import json

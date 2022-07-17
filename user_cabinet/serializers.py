@@ -1,5 +1,8 @@
 """
 https://www.django-rest-framework.org/api-guide/serializers/
+
+Author:
+    Konstantin S. (https://github.com/ST1LLY)
 """
 # pylint:disable=missing-class-docstring, missing-module-docstring
 from socket import gethostbyname, gaierror

@@ -1,5 +1,8 @@
 """
 Support functions for the main logic
+
+Author:
+    Konstantin S. (https://github.com/ST1LLY)
 """
 import json
 import logging

@@ -1,5 +1,8 @@
 """
 Models for user cabinet logic
+
+Author:
+    Konstantin S. (https://github.com/ST1LLY)
 """
 import datetime
 from typing import Any

@@ -1,6 +1,9 @@
 """
 The tasks performed by Celery
 The tasks shedule is set in dc_sonar_web/settings.py in param CELERY_BEAT_SCHEDULE
+
+Author:
+    Konstantin S. (https://github.com/ST1LLY)
 """
 import json
 import os

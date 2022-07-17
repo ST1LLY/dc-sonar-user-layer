@@ -1,5 +1,8 @@
 """
 Django admin panel settings
+
+Author:
+    Konstantin S. (https://github.com/ST1LLY)
 """
 # pylint:disable=missing-class-docstring,unsubscriptable-object
 # https://github.com/PyCQA/pylint-django/issues/361 (unsubscriptable-object)
