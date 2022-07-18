@@ -51,7 +51,6 @@ PyJWT==1.7.1
 pylint==2.14.3
 pylint-django==2.5.3
 pylint-plugin-utils==0.7
-python-ldap==3.4.0
 pytz==2022.1
 requests==2.28.0
 six==1.16.0
