@@ -209,8 +209,8 @@ Django REST API is located on https://localhost:8000/api/user-cabinet/domain/.
 
 ## PyCharm settings
 
-See common settings in [common PyCharm settings](https://github.com/ST1LLY/dc-sonar#pycharm-settings)
+See common settings in [common PyCharm settings](https://github.com/ST1LLY/dc-sonar#pycharm-settings).
 
 ### Pylint
 
-Arguments: `--max-line-length=119 --disable=too-few-public-methods,import-error,import-outside-toplevel,broad-except,wrong-import-position,duplicate-code --load-plugins pylint_django --django-settings-module=dc_sonar_web.settings`
+Arguments: `--max-line-length=119 --disable=too-few-public-methods,import-error,import-outside-toplevel,broad-except,wrong-import-position,duplicate-code --load-plugins pylint_django --django-settings-module=dc_sonar_web.settings`.
