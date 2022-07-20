@@ -1,10 +1,10 @@
 # DC Sonar User Layer
 
-It's the part of [dc-sonar](https://github.com/ST1LLY/dc-sonar) project
+It is part of the [dc-sonar](https://github.com/ST1LLY/dc-sonar) project.
 
 ## Deploy for development
 
-Clone [dc-sonar-user-layer](https://github.com/ST1LLY/dc-sonar-user-layer)
+Clone the [dc-sonar-user-layer](https://github.com/ST1LLY/dc-sonar-user-layer)
 
 ```bash
 git clone https://github.com/ST1LLY/dc-sonar-user-layer.git
@@ -12,57 +12,63 @@ git clone https://github.com/ST1LLY/dc-sonar-user-layer.git
 
 ### Windows
 
-Open Powershell, cd to created dc-sonar-user-layer folder
+Open Powershell.
 
-Create Python virtual environment
+Go to the created dc-sonar-user-layer folder:
+
+```
+cd {YOUR_PATH}
+```
+
+Create Python virtual environment:
 
 ```powershell
 &"C:\Program Files\Python310\python.exe" -m venv venv
 ```
 
-Active venv
+Active created venv:
 
 ```
 .\venv\Scripts\Activate.ps1
 ```
 
-Install pip packages
+Install pip packages:
 
 ```
 pip install -r .\requirements.txt
 ```
 
-Open dc-sonar-user-layer folder in IDE - PyCharm for example
+Open the dc-sonar-user-layer folder in IDE - PyCharm, for example.
 
 ### Ubuntu
 
-Go to folder where directory with source is located
+Go to the folder where the directory with the source is located.
 
-Deactivate previous venv if uses
+Deactivate the previous venv if it uses:
 
 ```shell
 deactivate
 ```
 
-Create venv
+Create venv:
 
 ```shell
 python3.10 -m venv venv-user-layer
 ```
 
-Activate venv
+Activate created venv:
 
 ```shell
 source venv-user-layer/bin/activate
 ```
 
-Install dependencies
+Install dependencies:
 
 ```shell
 pip install -r dc-sonar-user-layer/requirements.txt
 ```
 
-Deactivate venv
+Deactivate venv:
 
 ```
 deactivate
@@ -72,15 +78,15 @@ deactivate
 
 Copy `dc_sonar_web/sensitive_settings_blank.py` to `dc_sonar_web/sensitive_settings.py`
 
-Fulfil params
+Set the params:
 
-`S_DATABASES` contains value for [DATABASES](https://docs.djangoproject.com/en/4.0/ref/settings/#databases) in `dc_sonar_web/settings.py` used for DB connection
+`S_DATABASES` contains value for [DATABASES](https://docs.djangoproject.com/en/4.0/ref/settings/#databases) in `dc_sonar_web/settings.py` used for DB connection.
 
-`S_SECRET_KEY` contains value for [SECRET_KEY](https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/#secret-key) in `dc_sonar_web/settings.py` 
+`S_SECRET_KEY` contains value for [SECRET_KEY](https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/#secret-key) in `dc_sonar_web/settings.py` .
 
-`S_SIGNING_KEY` contains value for Simple JWT [SIGNING_KEY](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html#signing-key)  in `dc_sonar_web/settings.py`
+`S_SIGNING_KEY` contains value for Simple JWT [SIGNING_KEY](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html#signing-key)  in `dc_sonar_web/settings.py`.
 
-`S_AES_256_KEY` contains value for `AES_256_KEY` in `dc_sonar_web/settings.py` using for decryption and  encryption saved passed of acc have been bruted
+`S_AES_256_KEY` contains value for `AES_256_KEY` in `dc_sonar_web/settings.py` using for decryption and  encryption saved passwords of accounts have been bruted.
 
 Example:
 
@@ -101,35 +107,35 @@ S_SIGNING_KEY = 'r?r:f2dP,N0k!HW?_TJ?z_d}Fu0Z?n]Qrv_6U}qtvyT%jm8C5?]s#@E2W6oKc3u
 S_AES_256_KEY = '8^xjD=0v3Lk_1QNZW+1sb6u)oDQw0nhcPvu^gh:jHCyR*}jn+_T#Ak%*>3p_yvZe'
 ```
 
-Before the first run init models
+Before the first run, it is needed to init models.
 
-Open terminal
+Open terminal.
 
-Activate venv
+Activate venv:
 
 ```shell
 source venv-user-layer/bin/activate
 ```
 
-Go to repo directory
+Go to the project directory:
 
 ```shell
 cd dc-sonar-user-layer/
 ```
 
-Run migrate
+Run the migrate command:
 
 ```shell
 python manage.py migrate
 ```
 
-[Create](https://docs.djangoproject.com/en/1.8/intro/tutorial02/#creating-an-admin-user) Django admin user
+[Create](https://docs.djangoproject.com/en/1.8/intro/tutorial02/#creating-an-admin-user) Django admin user.
 
 ### Run
 
-Open terminal
+Open terminal.
 
-Execute commands for running Django backend
+Execute commands for running Django backend:
 
 ```
 source venv-user-layer/bin/activate
@@ -137,9 +143,9 @@ cd dc-sonar-user-layer/
 python manage.py runsslserver 0.0.0.0:8000
 ```
 
-Open terminal
+Open terminal.
 
-Execute commands for running ntlm_brute_info_getter
+Execute commands for running ntlm_brute_info_getter:
 
 ```
 source venv-user-layer/bin/activate
@@ -147,9 +153,9 @@ cd dc-sonar-user-layer/user_cabinet
 python ntlm_brute_info_getter.py
 ```
 
-Open terminal
+Open terminal.
 
-Execute commands for running ntlm_dump_info_getter
+Execute commands for running ntlm_dump_info_getter:
 
 ```
 source venv-user-layer/bin/activate
@@ -157,9 +163,9 @@ cd dc-sonar-user-layer/user_cabinet
 python ntlm_dump_info_getter.py
 ```
 
-Open terminal
+Open terminal.
 
-Execute commands for running no_exp_pass_info_getter
+Execute commands for running no_exp_pass_info_getter:
 
 ```
 source venv-user-layer/bin/activate
@@ -167,9 +173,9 @@ cd dc-sonar-user-layer/user_cabinet
 python no_exp_pass_info_getter.py
 ```
 
-Open terminal
+Open terminal.
 
-Execute commands for running reused_pass_info_getter
+Execute commands for running reused_pass_info_getter:
 
 ```
 source venv-user-layer/bin/activate
@@ -177,9 +183,9 @@ cd dc-sonar-user-layer/user_cabinet
 python reused_pass_info_getter.py
 ```
 
-Open terminal
+Open terminal.
 
-Execute commands for running sheduled tasks setter
+Execute commands for running sheduled tasks setter:
 
 ```
 source venv-user-layer/bin/activate
@@ -187,9 +193,9 @@ cd dc-sonar-user-layer/
 celery -A dc_sonar_web beat -l info
 ```
 
-Open terminal
+Open terminal.
 
-Execute commands for running sheduled tasks performer
+Execute commands for running sheduled tasks performer:
 
 ```
 source venv-user-layer/bin/activate
@@ -197,13 +203,9 @@ cd dc-sonar-user-layer/
 celery -A dc_sonar_web worker -l info
 ```
 
-Django admin
+Django admin is located on https://localhost:8000/admin/.
 
-https://localhost:8000/admin/
-
-Django REST API
-
-https://localhost:8000/api/user-cabinet/domain/
+Django REST API is located on https://localhost:8000/api/user-cabinet/domain/.
 
 ## PyCharm settings
 
