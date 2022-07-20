@@ -123,6 +123,8 @@ Run migrate
 python manage.py migrate
 ```
 
+[Create](https://docs.djangoproject.com/en/1.8/intro/tutorial02/#creating-an-admin-user) Django admin user
+
 ### Run
 
 Open terminal
