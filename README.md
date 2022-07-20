@@ -68,20 +68,6 @@ Deactivate venv
 deactivate
 ```
 
-
-
-### PyCharm settings
-
-
-
-See common settings in [common PyCharm settings](https://github.com/ST1LLY/dc-sonar#pycharm-settings)
-
-
-
-#### Pylint
-
-Arguments: `--max-line-length=119 --disable=too-few-public-methods,import-error,import-outside-toplevel,broad-except,wrong-import-position,duplicate-code --load-plugins pylint_django --django-settings-module=dc_sonar_web.settings`
-
 ### Config
 
 Copy `dc_sonar_web/sensitive_settings_blank.py` to `dc_sonar_web/sensitive_settings.py`
@@ -115,3 +101,112 @@ S_SIGNING_KEY = 'r?r:f2dP,N0k!HW?_TJ?z_d}Fu0Z?n]Qrv_6U}qtvyT%jm8C5?]s#@E2W6oKc3u
 S_AES_256_KEY = '8^xjD=0v3Lk_1QNZW+1sb6u)oDQw0nhcPvu^gh:jHCyR*}jn+_T#Ak%*>3p_yvZe'
 ```
 
+Before the first run init models
+
+Open terminal
+
+Activate venv
+
+```shell
+source venv-user-layer/bin/activate
+```
+
+Go to repo directory
+
+```shell
+cd dc-sonar-user-layer/
+```
+
+Run migrate
+
+```shell
+python manage.py migrate
+```
+
+### Run
+
+Open terminal
+
+Execute commands for running Django backend
+
+```
+source venv-user-layer/bin/activate
+cd dc-sonar-user-layer/
+python manage.py runsslserver 0.0.0.0:8000
+```
+
+Open terminal
+
+Execute commands for running ntlm_brute_info_getter
+
+```
+source venv-user-layer/bin/activate
+cd dc-sonar-user-layer/user_cabinet
+python ntlm_brute_info_getter.py
+```
+
+Open terminal
+
+Execute commands for running ntlm_dump_info_getter
+
+```
+source venv-user-layer/bin/activate
+cd dc-sonar-user-layer/user_cabinet
+python ntlm_dump_info_getter.py
+```
+
+Open terminal
+
+Execute commands for running no_exp_pass_info_getter
+
+```
+source venv-user-layer/bin/activate
+cd dc-sonar-user-layer/user_cabinet
+python no_exp_pass_info_getter.py
+```
+
+Open terminal
+
+Execute commands for running reused_pass_info_getter
+
+```
+source venv-user-layer/bin/activate
+cd dc-sonar-user-layer/user_cabinet
+python reused_pass_info_getter.py
+```
+
+Open terminal
+
+Execute commands for running sheduled tasks setter
+
+```
+source venv-user-layer/bin/activate
+cd dc-sonar-user-layer/
+celery -A dc_sonar_web beat -l info
+```
+
+Open terminal
+
+Execute commands for running sheduled tasks performer
+
+```
+source venv-user-layer/bin/activate
+cd dc-sonar-user-layer/
+celery -A dc_sonar_web worker -l info
+```
+
+Django admin
+
+https://localhost:8000/admin/
+
+Django REST API
+
+https://localhost:8000/api/user-cabinet/domain/
+
+## PyCharm settings
+
+See common settings in [common PyCharm settings](https://github.com/ST1LLY/dc-sonar#pycharm-settings)
+
+### Pylint
+
+Arguments: `--max-line-length=119 --disable=too-few-public-methods,import-error,import-outside-toplevel,broad-except,wrong-import-position,duplicate-code --load-plugins pylint_django --django-settings-module=dc_sonar_web.settings`
