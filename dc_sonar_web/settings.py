@@ -199,12 +199,12 @@ LOGGING = {
     'formatters': {
         'file': {
             'format': '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - '
-                      '%(funcName)s - %(levelname)s - %(message)s'
+            '%(funcName)s - %(levelname)s - %(message)s'
         },
         'console_color': {
             '()': 'colorlog.ColoredFormatter',
             'format': '%(process)s %(thread)s: %(asctime)s - %(filename)s:%(lineno)d - '
-                      '%(funcName)s -%(log_color)s %(levelname)s %(reset)s - %(message)s',
+            '%(funcName)s -%(log_color)s %(levelname)s %(reset)s - %(message)s',
             'log_colors': {
                 'DEBUG': 'bold_black',
                 'INFO': 'green',
