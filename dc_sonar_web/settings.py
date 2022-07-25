@@ -284,3 +284,4 @@ LOGGING = {
 }
 
 VERSION_FILE_PATH = os.path.join(BASE_DIR, 'dc_sonar_web', 'DC_SONAR_VERSION.txt')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')

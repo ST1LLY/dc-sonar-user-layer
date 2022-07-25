@@ -1,3 +1,5 @@
+static/*
+!static/.gitkeep
 user_cabinet/logs/*
 !user_cabinet/logs/.gitkeep
 user_cabinet/locks/*
