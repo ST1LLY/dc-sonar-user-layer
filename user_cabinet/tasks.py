@@ -5,6 +5,7 @@ The tasks shedule is set in dc_sonar_web/settings.py in param CELERY_BEAT_SCHEDU
 Author:
     Konstantin S. (https://github.com/ST1LLY)
 """
+import datetime
 import json
 import os
 import sys
@@ -79,6 +80,7 @@ def ntlm_dump_job_setter() -> None:
                     ),
                 )
                 domains_qs[idx].dump_status = Domain.ProcessStatus.WAIT_PERFORMING
+                domains_qs[idx].dump_status_update = datetime.datetime.now().astimezone()
                 domains_qs[idx].save()
     except Timeout:
         logger.info('Previous process of %s is working', task_name)
@@ -135,6 +137,7 @@ def noexp_pass_job_setter() -> None:
                     ),
                 )
                 domains_qs[idx].no_exp_pass_status = Domain.ProcessStatus.WAIT_PERFORMING
+                domains_qs[idx].no_exp_pass_status_update = datetime.datetime.now().astimezone()
                 domains_qs[idx].save()
 
     except Timeout:
@@ -189,7 +192,8 @@ def reused_pass_job_setter() -> None:
                         delivery_mode=2,
                     ),
                 )
-                domains_qs[idx].no_exp_pass_status = Domain.ProcessStatus.WAIT_PERFORMING
+                domains_qs[idx].reused_pass_status = Domain.ProcessStatus.WAIT_PERFORMING
+                domains_qs[idx].reused_pass_status_update = datetime.datetime.now().astimezone()
                 domains_qs[idx].save()
 
     except Timeout:
