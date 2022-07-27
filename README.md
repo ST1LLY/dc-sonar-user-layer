@@ -207,3 +207,8 @@ Django admin is located on https://localhost:8000/admin/.
 
 Django REST API is located on https://localhost:8000/api/user-cabinet/domain/.
 
+## Versions
+
+### 2022.7.27-1
+
+The initial version.
